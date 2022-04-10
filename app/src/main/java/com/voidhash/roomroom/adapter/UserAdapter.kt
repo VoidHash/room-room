@@ -8,10 +8,11 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.voidhash.roomroom.R
+import com.voidhash.roomroom.entity.User
 import com.voidhash.roomroom.listener.OnButtonClickListener
 import kotlinx.android.synthetic.main.item_view.view.*
 
-class UserAdapter(private val context: Context):
+class UserAdapter(private var userList: MutableList<User>, private val context: Context):
     RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     private lateinit var listener: OnButtonClickListener
@@ -22,13 +23,19 @@ class UserAdapter(private val context: Context):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currentItem = userList[position]
         holder?.let {
-            it.bindView(it.adapterPosition, listener)
+            it.bindView(currentItem, it.adapterPosition, listener)
         }
     }
 
     override fun getItemCount(): Int {
-        return 0
+        return userList.size
+    }
+
+    fun setUserList(newList: MutableList<User>) {
+        userList = newList
+        notifyDataSetChanged()
     }
 
     fun setOnClickListener(listener: OnButtonClickListener) {
@@ -42,7 +49,9 @@ class UserAdapter(private val context: Context):
         private val btnEdit: ImageButton = itemView.btnEdit
         private val btnDelete: ImageButton = itemView.btnDelete
 
-        fun bindView(position: Int, listener: OnButtonClickListener) {
+        fun bindView(item: User, position: Int, listener: OnButtonClickListener) {
+            txtFirstName.text = item.firstName
+            txtLastName.text = item.lastName
             btnEdit.setOnClickListener {  }
             btnDelete.setOnClickListener {  }
         }
