@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.voidhash.roomroom.R
 import com.voidhash.roomroom.entity.User
@@ -42,6 +43,12 @@ class UserAdapter(private var userList: MutableList<User>, private val context: 
         this.listener = listener
     }
 
+    fun removeUser(position: Int) {
+        userList.removeAt(position)
+        notifyItemRemoved(position)
+        Toast.makeText(context, "User deleted!", Toast.LENGTH_SHORT).show()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  {
 
         private val txtFirstName: TextView = itemView.txtFirstName
@@ -53,7 +60,7 @@ class UserAdapter(private var userList: MutableList<User>, private val context: 
             txtFirstName.text = item.firstName
             txtLastName.text = item.lastName
             btnEdit.setOnClickListener { listener.onEditUser(item) }
-            btnDelete.setOnClickListener {  }
+            btnDelete.setOnClickListener { listener.onDeleteUser(item, position) }
         }
     }
 }

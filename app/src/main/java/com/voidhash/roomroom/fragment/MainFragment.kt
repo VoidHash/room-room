@@ -22,9 +22,9 @@ class MainFragment : Fragment(), OnButtonClickListener {
 
     private lateinit var adapter: UserAdapter
     private lateinit var myList: MutableList<User>
-    private lateinit var userDao: UserDao
     private lateinit var fm: FragmentManager
     private lateinit var ft: FragmentTransaction
+    private lateinit var db: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,9 +40,9 @@ class MainFragment : Fragment(), OnButtonClickListener {
         fm = (requireActivity() as AppCompatActivity).supportFragmentManager
         ft = fm.beginTransaction()
 
-        val db = AppDatabase.getDatabase(requireContext())
-        userDao = db.userDao()
-        myList = mutableListOf()
+        db = AppDatabase.getDatabase(requireContext())
+        //myList = mutableListOf()
+        myList = listAllUser(db.userDao())
 
         val recycleView: RecyclerView = rclUser
         val layoutManager = LinearLayoutManager(requireContext(),
@@ -58,7 +58,7 @@ class MainFragment : Fragment(), OnButtonClickListener {
             //Just to test your list function
             //myList = mutableListOf(User(null,"Void", "Hash"))
             //userDao.insertAll(myList[0])
-            val allUsers = listAllUser(userDao)
+            val allUsers = listAllUser(db.userDao())
             adapter.setUserList(allUsers)
         }
 
@@ -89,6 +89,9 @@ class MainFragment : Fragment(), OnButtonClickListener {
         ft.commit()
     }
 
-    override fun onDeleteUser() {
+    override fun onDeleteUser(item: User, position: Int) {
+        adapter.removeUser(position)
+        adapter.notifyDataSetChanged()
+        db.userDao().delete(item)
     }
 }
