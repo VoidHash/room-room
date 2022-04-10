@@ -9,11 +9,11 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.voidhash.roomroom.R
+import com.voidhash.roomroom.db.AppDatabase
+import com.voidhash.roomroom.entity.User
 import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : Fragment() {
-
-    private var isUpdating = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +37,13 @@ class UserFragment : Fragment() {
     }
 
     private fun submitUser() {
+        val db = AppDatabase.getDatabase(requireContext())
+        val userDao = db.userDao()
+
+        val userUpdate: User =
+            User(null, edtFirstName.text.toString(), edtLastName.text.toString())
+        userDao.insertAll(userUpdate)
+
         val fm: FragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
         fm.popBackStack()
     }
