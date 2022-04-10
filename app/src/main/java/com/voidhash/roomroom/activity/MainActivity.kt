@@ -1,7 +1,8 @@
-package com.voidhash.roomroom
+package com.voidhash.roomroom.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.voidhash.roomroom.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
