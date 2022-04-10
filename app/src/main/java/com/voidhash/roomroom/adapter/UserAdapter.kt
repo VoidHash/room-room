@@ -52,7 +52,7 @@ class UserAdapter(private var userList: MutableList<User>, private val context: 
         fun bindView(item: User, position: Int, listener: OnButtonClickListener) {
             txtFirstName.text = item.firstName
             txtLastName.text = item.lastName
-            btnEdit.setOnClickListener {  }
+            btnEdit.setOnClickListener { listener.onEditUser(item) }
             btnDelete.setOnClickListener {  }
         }
     }

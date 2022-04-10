@@ -15,6 +15,9 @@ import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : Fragment() {
 
+    private var user: User? = null
+    private var isUpdating = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +30,13 @@ class UserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val edtFirstName: EditText = edtFirstName
         val edtLastName: EditText = edtLastName
+
+        arguments?.let {
+            user = it.getParcelable<User>("model")
+            edtFirstName.setText(user?.firstName)
+            edtLastName.setText(user?.lastName)
+            isUpdating = true
+        }
 
         val btnSubmit = btnSubmit
         btnSubmit.setOnClickListener {
@@ -41,8 +51,12 @@ class UserFragment : Fragment() {
         val userDao = db.userDao()
 
         val userUpdate: User =
-            User(null, edtFirstName.text.toString(), edtLastName.text.toString())
-        userDao.insertAll(userUpdate)
+            User(user?.uid, edtFirstName.text.toString(), edtLastName.text.toString())
+        if(isUpdating) {
+            userDao.updateUser(userUpdate)
+        } else {
+            userDao.insertAll(userUpdate)
+        }
 
         val fm: FragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
         fm.popBackStack()

@@ -23,6 +23,8 @@ class MainFragment : Fragment(), OnButtonClickListener {
     private lateinit var adapter: UserAdapter
     private lateinit var myList: MutableList<User>
     private lateinit var userDao: UserDao
+    private lateinit var fm: FragmentManager
+    private lateinit var ft: FragmentTransaction
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +36,9 @@ class MainFragment : Fragment(), OnButtonClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        fm = (requireActivity() as AppCompatActivity).supportFragmentManager
+        ft = fm.beginTransaction()
 
         val db = AppDatabase.getDatabase(requireContext())
         userDao = db.userDao()
@@ -67,17 +72,18 @@ class MainFragment : Fragment(), OnButtonClickListener {
     }
 
     private fun insertUser() {
-        val fm: FragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
-        val ft: FragmentTransaction = fm.beginTransaction()
         ft.replace(R.id.fragmentContainerView, UserFragment())
         ft.addToBackStack(null)
         ft.commit()
     }
 
-    override fun onEditUser() {
-        val fm: FragmentManager = (requireActivity() as AppCompatActivity).supportFragmentManager
-        val ft: FragmentTransaction = fm.beginTransaction()
+    override fun onEditUser(item: User) {
         val frag = UserFragment()
+        frag.apply {
+            arguments = Bundle().apply {
+                putParcelable("model", item)
+            }
+        }
         ft.replace(R.id.fragmentContainerView, frag)
         ft.addToBackStack(null)
         ft.commit()
