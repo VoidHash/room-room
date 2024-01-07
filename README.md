@@ -1,11 +1,17 @@
 # Room Room
-An app with implementation of [Room](https://developer.android.com/training/data-storage/room) database for Android platform
+An app with implementation of [Room database](https://developer.android.com/training/data-storage/room) for Android platform
 
 The Room persistence library provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite. In particular, Room provides the following benefits:
 
 -   Compile-time verification of SQL queries.
 -   Convenience annotations that minimize repetitive and error-prone boilerplate code.
 -   Streamlined database migration paths.
+
+### Screenshots
+
+![room-room](https://github.com/VoidHash/room-room/assets/8929413/d282fd15-9278-48a1-83fb-658354ac319c)
+
+---
 
 To persist data with Room database you just need:
 
